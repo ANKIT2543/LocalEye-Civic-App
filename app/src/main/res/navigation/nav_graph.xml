@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment"> <fragment
+    android:id="@+id/loginFragment"
+    android:name="com.example.realproject.LoginFragment"
+    android:label="fragment_login"
+    tools:layout="@layout/fragment_login">
+
+    <action
+        android:id="@+id/action_login_to_home"
+        app:destination="@id/homeFragment"
+        app:popUpTo="@id/loginFragment"
+        app:popUpToInclusive="true" />
+</fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.realproject.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.realproject.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" />
+
+    <fragment
+        android:id="@+id/trackFragment"
+        android:name="com.example.realproject.TrackFragment"
+        android:label="fragment_track"
+        tools:layout="@layout/fragment_track" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.realproject.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.realproject.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.realproject.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
