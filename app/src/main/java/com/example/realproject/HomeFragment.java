@@ -219,23 +219,31 @@ public class HomeFragment extends Fragment {
 
     @SuppressWarnings("MissingPermission")
     private void enableUserLocation() {
-        if (mapView != null) {
-            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
-                    .addOnSuccessListener(location -> {
-                        if (location != null) {
-                            GeoPoint myLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
-                            mapView.getController().animateTo(myLocation);
-                            mapView.getController().setZoom(16.0);
+        if (mapView == null) return; // Initial safety check
 
-                            Marker userMarker = new Marker(mapView);
-                            userMarker.setPosition(myLocation);
-                            userMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                            userMarker.setTitle("You are here");
-                            mapView.getOverlays().add(userMarker);
-                            mapView.invalidate();
-                        }
-                    });
-        }
+        // Added requireActivity() to bind this to the screen's lifecycle so it stops if the screen closes
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                .addOnSuccessListener(requireActivity(), location -> {
+
+                    // ==========================================================
+                    // THE SAFETY NET: If the map isn't ready or the user already
+                    // switched to another tab, just stop and don't crash!
+                    // ==========================================================
+                    if (mapView == null) return;
+
+                    if (location != null) {
+                        GeoPoint myLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        mapView.getController().animateTo(myLocation);
+                        mapView.getController().setZoom(16.0);
+
+                        Marker userMarker = new Marker(mapView);
+                        userMarker.setPosition(myLocation);
+                        userMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                        userMarker.setTitle("You are here");
+                        mapView.getOverlays().add(userMarker);
+                        mapView.invalidate();
+                    }
+                });
     }
 
     private void searchMapLocation(String locationName) {

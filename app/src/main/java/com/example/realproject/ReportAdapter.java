@@ -49,11 +49,24 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         holder.tvTitle.setText(report.getTitle());
         holder.tvDescription.setText(report.getDescription());
 
-        // Display Evidence Image if exists
-        if (report.getImageUrl() != null && !report.getImageUrl().isEmpty()) {
-            holder.ivEvidence.setVisibility(View.VISIBLE);
-            Glide.with(holder.itemView.getContext()).load(report.getImageUrl()).centerCrop().into(holder.ivEvidence);
-        } else {
+        // ==========================================================
+        // THE SAFETY NET: Bulletproof Image Loading
+        // ==========================================================
+        try {
+            String imageUrl = report.getImageUrl();
+            // Check if it's null, empty, or literally the text word "null"
+            if (imageUrl != null && !imageUrl.trim().isEmpty() && !imageUrl.equalsIgnoreCase("null")) {
+                holder.ivEvidence.setVisibility(View.VISIBLE);
+                Glide.with(holder.itemView.getContext())
+                        .load(imageUrl)
+                        .centerCrop()
+                        .into(holder.ivEvidence);
+            } else {
+                // Graceful Degradation: Hide the box, don't crash
+                holder.ivEvidence.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            // If absolutely ANYTHING goes wrong, catch the error silently and hide the image
             holder.ivEvidence.setVisibility(View.GONE);
         }
 
